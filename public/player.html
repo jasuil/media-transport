@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>HLS Player</title>
+    <link href="https://vjs.zencdn.net/7.19.2/video-js.css" rel="stylesheet" />
+  </head>
+  <body>
+    <video
+      id="my-video"
+      class="video-js vjs-big-play-centered vjs-theme-sea"
+      controls
+      preload="auto"
+      fluid="true"
+      poster="https://example.com/poster.png"
+      data-setup='{}'>
+    </video>
+    <div id="video-desc">그냥</div>
+    <script src="https://vjs.zencdn.net/7.17.0/video.min.js"></script>
+    <script>
+      var playlist = [
+        '/video/playlist.m3u8',
+        '/video/playlist2.m3u8'
+      ];
+
+      var player = videojs('my-video');
+      player.src({
+      src: '/video/playlist.m3u8',
+      type: 'application/x-mpegURL'
+      });
+
+      player.play();
+
+      var currentIndex = 0;
+      player.on('ended', function() {
+        currentIndex++;
+        if (currentIndex < playlist.length) {
+          player.src({ src: playlist[currentIndex], type: 'application/x-mpegURL' });
+          player.play();
+        } else {
+          document.getElementById('video-desc').innerText = '모든 영상이 재생되었습니다.';
+        }
+      });
+    </script>
+  </body>
+</html>
